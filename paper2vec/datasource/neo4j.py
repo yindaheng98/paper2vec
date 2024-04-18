@@ -12,8 +12,6 @@ async def get_papers(tx, query):
         payload = {"title": record[0]["title"], "title_hash": record[0]["title_hash"]}
         if "abstract" in record[0]:
             paper += " Abstract: " + record[0]["abstract"]
-        if "CCF" in record[0]:
-            payload["CCF"] = record[0]["CCF"]
         content = Content(id=record[0]["title_hash"], text=paper, payload=payload)
         papers.append(content)
     return papers
