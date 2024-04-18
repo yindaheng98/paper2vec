@@ -1,5 +1,12 @@
 import abc
-from .config import Config
+from argparse import ArgumentParser
+
+
+class Config(metaclass=abc.ABCMeta):
+    @staticmethod
+    @abc.abstractmethod
+    def add_arguements(parser: ArgumentParser):
+        pass
 
 
 class Vectorizer(Config):
