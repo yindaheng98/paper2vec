@@ -1,9 +1,9 @@
-from openai import OpenAI
-from crawler2vec.config import Config
+from openai import AsyncOpenAI
+from crawler2vec.abc import Vectorizer
 from argparse import ArgumentParser
 
 
-class TextEmbedding(Config):
+class TextEmbedding(Vectorizer):
     @staticmethod
     def add_arguements(parser: ArgumentParser):
         parser.add_argument("--api_key", type=str, required=True, help="Your OpenAI API key.")
@@ -13,11 +13,11 @@ class TextEmbedding(Config):
                             help="Which model do you want to use.")
 
     def __init__(self, args):
-        self.client = OpenAI(api_key=args.api_key)
+        self.client = AsyncOpenAI(api_key=args.api_key)
         self.model = args.model
 
-    def vectorize(self, *args):
+    async def vectorize(self, *args):
         sentences = [text.replace("\n", " ") for text in args]
-        resp = self.client.embeddings.create(input=sentences, model=self.model)
+        resp = await self.client.embeddings.create(input=sentences, model=self.model)
         embeddings = [d.embedding for d in resp.data]
         return embeddings
