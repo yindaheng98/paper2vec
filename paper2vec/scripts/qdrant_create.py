@@ -1,6 +1,6 @@
 import asyncio
 from argparse import ArgumentParser
-from crawler2vec.datadestination import QdrantDatabase
+from paper2vec.datadestination import QdrantDatabase
 parser = ArgumentParser()
 parser.add_argument("--size", type=int, default=1536, help=f'Size of Qdrant collection.')
 QdrantDatabase.add_arguements(parser)

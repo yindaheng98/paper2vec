@@ -1,5 +1,5 @@
 from openai import AsyncOpenAI
-from crawler2vec.abc import Vectorizer
+from paper2vec.abc import Vectorizer
 from argparse import ArgumentParser
 import dbm
 import os

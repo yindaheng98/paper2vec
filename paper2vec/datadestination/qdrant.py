@@ -2,7 +2,7 @@ import hashlib
 import uuid
 from qdrant_client import AsyncQdrantClient
 from qdrant_client.models import PointStruct, Distance, VectorParams
-from crawler2vec.abc import DataDestination, Point
+from paper2vec.abc import DataDestination, Point
 from argparse import ArgumentParser
 
 

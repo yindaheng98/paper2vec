@@ -1,9 +1,9 @@
 import asyncio
 from itertools import product
-from crawler2vec.datasource import alias as datasources
-from crawler2vec.vectorizer import alias as vectorizers
-from crawler2vec.datadestination import alias as datadestinations
-from crawler2vec.abc import run
+from paper2vec.datasource import alias as datasources
+from paper2vec.vectorizer import alias as vectorizers
+from paper2vec.datadestination import alias as datadestinations
+from paper2vec.abc import run
 from argparse import ArgumentParser
 
 

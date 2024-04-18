@@ -1,5 +1,5 @@
 from neo4j import AsyncGraphDatabase
-from crawler2vec.abc import DataSource, Content
+from paper2vec.abc import DataSource, Content
 from argparse import ArgumentParser
 
 
