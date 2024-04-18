@@ -20,6 +20,7 @@ def func_parser_gen(datasource_constructor, vectorizer_constructor, datadestinat
 
 
 parser = ArgumentParser()
+parser.add_argument("--batch-size", type=int, default=64, help=f'Batch size of vectorize.')
 subparsers = parser.add_subparsers(help='sub-command help')
 for datasource, vectorizer, datadestination in product(datasources.keys(), vectorizers.keys(), datadestinations.keys()):
     subparser = subparsers.add_parser(
