@@ -1,5 +1,6 @@
 import asyncio
 from crawler2vec.vectorize.openai import TextEmbedding
+from .abc import Vectorizer
 from argparse import ArgumentParser
 
 parser = ArgumentParser()
@@ -8,7 +9,7 @@ TextEmbedding.add_arguements(parser)
 
 async def main():
     args = parser.parse_args()
-    vectorizer = TextEmbedding(args)
+    vectorizer: Vectorizer = TextEmbedding(args)
     vector = await vectorizer.vectorize("Who am I?")
     print(vector)
 

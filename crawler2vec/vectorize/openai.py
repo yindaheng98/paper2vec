@@ -16,8 +16,8 @@ class TextEmbedding(Vectorizer):
         self.client = AsyncOpenAI(api_key=args.api_key)
         self.model = args.model
 
-    async def vectorize(self, *args):
-        sentences = [text.replace("\n", " ") for text in args]
+    async def vectorize(self, *contents):
+        sentences = [text.replace("\n", " ") for text in contents]
         resp = await self.client.embeddings.create(input=sentences, model=self.model)
         embeddings = [d.embedding for d in resp.data]
         return embeddings
