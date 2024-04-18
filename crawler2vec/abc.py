@@ -11,7 +11,8 @@ class Config(metaclass=abc.ABCMeta):
 
 
 class Content:
-    def __init__(self, text: str, payload: Dict):
+    def __init__(self, id: str, text: str, payload: Dict):
+        self.id: str = id
         self.text: str = text
         self.payload: Dict = payload
 
@@ -29,7 +30,8 @@ class Vectorizer(Config):
 
 
 class Point:
-    def __init__(self, vector: List[float], payload: Dict):
+    def __init__(self, id: str, vector: List[float], payload: Dict):
+        self.id: str = id
         self.vector: List[float] = vector
         self.payload: Dict = payload
 
@@ -46,10 +48,14 @@ async def run(datasource: DataSource, vectorizer: Vectorizer, datadestination: D
         batch.append(content)
         if len(batch) >= batch_size:
             vectors = await vectorizer.vectorize(*[c.text for c in batch])
-            points = [Point(vector=vector, payload=payload) for vector, payload in zip(vectors, batch)]
+            points = [
+                Point(id=content.id, vector=vector, payload=content.payload) for vector, content in zip(vectors, batch)
+            ]
             await datadestination.write_vectors(*points)
             batch = []
     if len(batch) > 0:
         vectors = await vectorizer.vectorize(*[c.text for c in batch])
-        points = [Point(vector=vector, payload=payload) for vector, payload in zip(vectors, batch)]
+        points = [
+            Point(id=content.id, vector=vector, payload=content.payload) for vector, content in zip(vectors, batch)
+        ]
         await datadestination.write_vectors(*points)

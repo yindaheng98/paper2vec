@@ -9,15 +9,12 @@ async def get_papers(tx, query):
         if "title" not in record[0]:
             continue
         paper = "Title: " + record[0]["title"]
-        payload = {
-            "title": record[0]["title"],
-            "title_hash": record[0]["title_hash"]
-        }
+        payload = {"title": record[0]["title"]}
         if "abstract" in record[0]:
             paper += " Abstract: " + record[0]["abstract"]
         if "CCF" in record[0]:
             payload["CCF"] = record[0]["CCF"]
-        content = Content(text=paper, payload=payload)
+        content = Content(id=record[0]["title_hash"], text=paper, payload=payload)
         papers.append(content)
     return papers
 
