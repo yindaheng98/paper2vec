@@ -1,6 +1,6 @@
 import asyncio
 from crawler2vec.vectorizer.openai import TextEmbedding
-from .abc import Vectorizer
+from crawler2vec.abc import Vectorizer
 from argparse import ArgumentParser
 
 parser = ArgumentParser()
