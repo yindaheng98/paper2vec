@@ -1,5 +1,5 @@
 from neo4j import AsyncGraphDatabase
-from crawler2vec.abc import DataSource
+from crawler2vec.abc import DataSource, Content
 from argparse import ArgumentParser
 
 
@@ -9,9 +9,16 @@ async def get_papers(tx, query):
         if "title" not in record[0]:
             continue
         paper = "Title: " + record[0]["title"]
+        payload = {
+            "title": record[0]["title"],
+            "title_hash": record[0]["title_hash"]
+        }
         if "abstract" in record[0]:
             paper += " Abstract: " + record[0]["abstract"]
-        papers.append(paper)
+        if "CCF" in record[0]:
+            payload["CCF"] = record[0]["CCF"]
+        content = Content(text=paper, payload=payload)
+        papers.append(content)
     return papers
 
 

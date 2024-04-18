@@ -1,5 +1,5 @@
 import abc
-from typing import List, AsyncGenerator
+from typing import List, Dict, AsyncGenerator
 from argparse import ArgumentParser
 
 
@@ -10,9 +10,15 @@ class Config(metaclass=abc.ABCMeta):
         pass
 
 
+class Content:
+    def __init__(self, text: str, payload: Dict):
+        self.text: str = text
+        self.payload: Dict = payload
+
+
 class DataSource(Config):
     @abc.abstractmethod
-    async def get_contents(self) -> AsyncGenerator[str, None]:
+    async def get_contents(self) -> AsyncGenerator[Content, None]:
         yield
 
 
@@ -22,7 +28,28 @@ class Vectorizer(Config):
         pass
 
 
+class Point:
+    def __init__(self, vector: List[float], payload: Dict):
+        self.vector: List[float] = vector
+        self.payload: Dict = payload
+
+
 class DataDestination(Config):
     @abc.abstractmethod
-    async def write_vectors(self, *vectors: List[float]) -> None:
+    async def write_vectors(self, *vectors: Point) -> None:
         pass
+
+
+async def run(datasource: DataSource, vectorizer: Vectorizer, datadestination: DataDestination, batch_size: int):
+    batch: List[Content] = []
+    async for content in datasource.get_contents():
+        batch.append(content)
+        if len(batch) >= batch_size:
+            vectors = await vectorizer.vectorize(*[c.text for c in batch])
+            points = [Point(vector=vector, payload=payload) for vector, payload in zip(vectors, batch)]
+            await datadestination.write_vectors(*points)
+            batch = []
+    if len(batch) > 0:
+        vectors = await vectorizer.vectorize(*[c.text for c in batch])
+        points = [Point(vector=vector, payload=payload) for vector, payload in zip(vectors, batch)]
+        await datadestination.write_vectors(*points)

@@ -11,7 +11,7 @@ async def main():
     args = parser.parse_args()
     datasource: DataSource = GraphQuery(args)
     async for content in datasource.get_contents():
-        print(content)
+        print(content.text, content.payload)
 
 if __name__ == "__main__":
     asyncio.run(main())
