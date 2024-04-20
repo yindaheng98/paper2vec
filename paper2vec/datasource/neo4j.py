@@ -25,7 +25,7 @@ async def get_total(tx, query):
 
 class GraphQuery(DataSource):
     @staticmethod
-    def add_arguements(parser: ArgumentParser):
+    def add_arguments(parser: ArgumentParser):
         parser.add_argument("--username", type=str, default=None, help=f'Auth username to neo4j database.')
         parser.add_argument("--password", type=str, default=None, help=f'Auth password to neo4j database.')
         parser.add_argument("--uri", type=str, required=True, help=f'URI to neo4j database.')

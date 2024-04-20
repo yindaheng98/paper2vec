@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 
 class QdrantDatabase(DataDestination):
     @staticmethod
-    def add_arguements(parser: ArgumentParser):
+    def add_arguments(parser: ArgumentParser):
         parser.add_argument("--url", type=str, required=True, help="URL to your Qdrant instance.")
         parser.add_argument("--collection", type=str, required=True, help="Name of your Qdrant collection.")
 

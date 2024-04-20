@@ -27,9 +27,9 @@ for datasource, vectorizer, datadestination in product(datasources.keys(), vecto
         f"{datasource}-{vectorizer}-{datadestination}",
         help=f"{datasource} -text-> {vectorizer} -vector-> {datadestination}"
     )
-    datasources[datasource].add_arguements(subparser)
-    vectorizers[vectorizer].add_arguements(subparser)
-    datadestinations[datadestination].add_arguements(subparser)
+    datasources[datasource].add_arguments(subparser)
+    vectorizers[vectorizer].add_arguments(subparser)
+    datadestinations[datadestination].add_arguments(subparser)
     subparser.set_defaults(func=func_parser_gen(
         datasources[datasource],
         vectorizers[vectorizer],

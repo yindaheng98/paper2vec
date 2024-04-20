@@ -8,7 +8,7 @@ import json
 
 class TextEmbedding(Vectorizer):
     @staticmethod
-    def add_arguements(parser: ArgumentParser):
+    def add_arguments(parser: ArgumentParser):
         parser.add_argument("--api_key", type=str, required=True, help="Your OpenAI API key.")
         parser.add_argument("--model",
                             choices=['text-embedding-3-small', 'text-embedding-3-large', 'text-embedding-ada-002'],

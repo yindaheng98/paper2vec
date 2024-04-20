@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 class Config(metaclass=abc.ABCMeta):
     @staticmethod
     @abc.abstractmethod
-    def add_arguements(parser: ArgumentParser) -> None:
+    def add_arguments(parser: ArgumentParser) -> None:
         pass
 
 
