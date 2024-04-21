@@ -16,7 +16,7 @@ async def get_papers(tx, query):
         elif "paperId" in paper:
             metadata["url"] = f"https://www.semanticscholar.org/paper/" + paper["paperId"]
         if "date" in paper:
-            metadata["created_at"] = paper["date"]
+            metadata["created_at"] = str(paper["date"])
         elif "year" in paper:
             metadata["created_at"] = paper["year"]
         text = "Title: " + paper["title"]
