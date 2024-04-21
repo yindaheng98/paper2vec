@@ -16,7 +16,7 @@ package_dir = {
 
 setup(
     name='paper2vec',
-    version='0.5',
+    version='0.6',
     author='yindaheng98',
     author_email='yindaheng98@gmail.com',
     url='https://github.com/yindaheng98/paper2vec',

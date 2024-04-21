@@ -29,7 +29,7 @@ class Vectorizer(Config):
 
 
 class Point(NamedTuple):
-    id: str = id
+    id: str
     vector: List[float]
     metadata: Dict
 
@@ -46,7 +46,7 @@ class RetrieverDestination(Config):
         pass
 
 
-async def run(datasource: DataSource, vectorizer: Vectorizer, datadestination: DataDestination, batch_size: int):
+async def run_vectorizer(datasource: DataSource, vectorizer: Vectorizer, datadestination: DataDestination, batch_size: int):
     batch: List[Content] = []
     async for content in datasource.get_contents():
         batch.append(content)
@@ -63,3 +63,14 @@ async def run(datasource: DataSource, vectorizer: Vectorizer, datadestination: D
             Point(id=content.id, vector=vector, metadata=content.metadata) for vector, content in zip(vectors, batch)
         ]
         await datadestination.write_vectors(*points)
+
+
+async def run_retriever(datasource: DataSource, retriever: RetrieverDestination, batch_size: int):
+    batch: List[Content] = []
+    async for content in datasource.get_contents():
+        batch.append(content)
+        if len(batch) >= batch_size:
+            await retriever.upsert(*batch)
+            batch = []
+    if len(batch) > 0:
+        await retriever.upsert(*batch)
