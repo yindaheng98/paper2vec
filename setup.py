@@ -22,7 +22,7 @@ package_dir = {
 
 setup(
     name='paper2vec',
-    version='1.0.2',
+    version='1.0.3',
     author='yindaheng98',
     author_email='yindaheng98@gmail.com',
     url='https://github.com/yindaheng98/paper2vec',
@@ -39,6 +39,7 @@ setup(
     install_requires=[
         'neo4j>=5.15.0',
         'openai>=1.21.2',
-        'qdrant-client>=1.8.2'
+        'qdrant-client>=1.8.2',
+        'attrs'
     ],
 )
