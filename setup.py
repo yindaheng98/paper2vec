@@ -8,6 +8,7 @@ with open("README.md", "r", encoding='utf8') as fh:
 
 package_dir = {
     'paper2vec': 'paper2vec',
+    'paper2vec.retrieverdestination': 'paper2vec/retrieverdestination',
     'paper2vec.datadestination': 'paper2vec/datadestination',
     'paper2vec.datasource': 'paper2vec/datasource',
     'paper2vec.vectorizer': 'paper2vec/vectorizer',
@@ -16,7 +17,7 @@ package_dir = {
 
 setup(
     name='paper2vec',
-    version='1.0',
+    version='1.0.1',
     author='yindaheng98',
     author_email='yindaheng98@gmail.com',
     url='https://github.com/yindaheng98/paper2vec',
