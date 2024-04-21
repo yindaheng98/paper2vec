@@ -1,5 +1,5 @@
 import abc
-from typing import List, Dict, AsyncGenerator
+from typing import List, Dict, AsyncGenerator, NamedTuple
 from argparse import ArgumentParser
 
 
@@ -10,11 +10,10 @@ class Config(metaclass=abc.ABCMeta):
         pass
 
 
-class Content:
-    def __init__(self, id: str, text: str, payload: Dict):
-        self.id: str = id
-        self.text: str = text
-        self.payload: Dict = payload
+class Content(NamedTuple):
+    id: str
+    text: str
+    metadata: Dict
 
 
 class DataSource(Config):
@@ -29,16 +28,21 @@ class Vectorizer(Config):
         pass
 
 
-class Point:
-    def __init__(self, id: str, vector: List[float], payload: Dict):
-        self.id: str = id
-        self.vector: List[float] = vector
-        self.payload: Dict = payload
+class Point(NamedTuple):
+    id: str = id
+    vector: List[float]
+    metadata: Dict
 
 
 class DataDestination(Config):
     @abc.abstractmethod
     async def write_vectors(self, *vectors: Point) -> None:
+        pass
+
+
+class RetrieverDestination(Config):
+    @abc.abstractmethod
+    async def upsert(self, *contents: Content) -> None:
         pass
 
 
@@ -49,13 +53,13 @@ async def run(datasource: DataSource, vectorizer: Vectorizer, datadestination: D
         if len(batch) >= batch_size:
             vectors = await vectorizer.vectorize(*[c.text for c in batch])
             points = [
-                Point(id=content.id, vector=vector, payload=content.payload) for vector, content in zip(vectors, batch)
+                Point(id=content.id, vector=vector, metadata=content.metadata) for vector, content in zip(vectors, batch)
             ]
             await datadestination.write_vectors(*points)
             batch = []
     if len(batch) > 0:
         vectors = await vectorizer.vectorize(*[c.text for c in batch])
         points = [
-            Point(id=content.id, vector=vector, payload=content.payload) for vector, content in zip(vectors, batch)
+            Point(id=content.id, vector=vector, metadata=content.metadata) for vector, content in zip(vectors, batch)
         ]
         await datadestination.write_vectors(*points)

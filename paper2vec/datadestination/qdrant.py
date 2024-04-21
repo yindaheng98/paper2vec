@@ -23,7 +23,7 @@ class QdrantDatabase(DataDestination):
             points=[
                 PointStruct(
                     id=str(uuid.UUID(hashlib.md5(point.id.encode("UTF-8")).hexdigest())),
-                    vector=point.vector, payload=point.payload
+                    vector=point.vector, payload=point.metadata
                 ) for point in vectors
             ]
         )

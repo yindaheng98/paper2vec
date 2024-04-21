@@ -10,10 +10,10 @@ async def get_papers(tx, query):
             papers.append(None)
             continue
         paper = "Title: " + record[0]["title"]
-        payload = {"title": record[0]["title"], "title_hash": record[0]["title_hash"]}
+        metadata = {"title": record[0]["title"], "title_hash": record[0]["title_hash"]}
         if "abstract" in record[0]:
             paper += " Abstract: " + record[0]["abstract"]
-        content = Content(id=record[0]["title_hash"], text=paper, payload=payload)
+        content = Content(id=record[0]["title_hash"], text=paper, metadata=metadata)
         papers.append(content)
     return papers
 
