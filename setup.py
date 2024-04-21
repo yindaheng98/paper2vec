@@ -9,6 +9,11 @@ with open("README.md", "r", encoding='utf8') as fh:
 package_dir = {
     'paper2vec': 'paper2vec',
     'paper2vec.retrieverdestination': 'paper2vec/retrieverdestination',
+    'paper2vec.retrieverdestination.openai': 'paper2vec/retrieverdestination/openai',
+    'paper2vec.retrieverdestination.openai.fast_api_client': 'paper2vec/retrieverdestination/openai/fast_api_client',
+    'paper2vec.retrieverdestination.openai.fast_api_client.models': 'paper2vec/retrieverdestination/openai/fast_api_client/models',
+    'paper2vec.retrieverdestination.openai.fast_api_client.api': 'paper2vec/retrieverdestination/openai/fast_api_client/api',
+    'paper2vec.retrieverdestination.openai.fast_api_client.api.default': 'paper2vec/retrieverdestination/openai/fast_api_client/api/default',
     'paper2vec.datadestination': 'paper2vec/datadestination',
     'paper2vec.datasource': 'paper2vec/datasource',
     'paper2vec.vectorizer': 'paper2vec/vectorizer',
@@ -17,7 +22,7 @@ package_dir = {
 
 setup(
     name='paper2vec',
-    version='1.0.1',
+    version='1.0.2',
     author='yindaheng98',
     author_email='yindaheng98@gmail.com',
     url='https://github.com/yindaheng98/paper2vec',
