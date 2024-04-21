@@ -1,5 +1,5 @@
 from .fast_api_client import AuthenticatedClient
-from .fast_api_client.models import Document, DocumentMetadata, UpsertRequest, UpsertResponse
+from .fast_api_client.models import Document, DocumentMetadata, Source, UpsertRequest, UpsertResponse
 from .fast_api_client.api.default import upsert_upsert_post
 from paper2vec.abc import RetrieverDestination, Content
 from argparse import ArgumentParser
@@ -12,10 +12,14 @@ class ChatGPTRetrievalPlugin(RetrieverDestination):
         parser.add_argument("--token", type=str, required=True, help="Bearer of your ChatGPT Plugin.")
 
     def __init__(self, args):
-        self.retriever = AuthenticatedClient(base_url=args.base_url, token=args.token)
+        self.base_url = args.base_url
+        self.token = args.token
 
     async def upsert(self, *contents: Content) -> None:
-        async with self.retriever as client:
+        async with AuthenticatedClient(base_url=self.base_url, token=self.token) as client:
+            for content in contents:
+                if "source" in content.metadata:
+                    content.metadata["source"] = Source(content.metadata["source"])
             response: UpsertResponse = await upsert_upsert_post.asyncio(
                 client=client,
                 body=UpsertRequest([
@@ -23,4 +27,4 @@ class ChatGPTRetrievalPlugin(RetrieverDestination):
                     for content in contents
                 ])
             )
-            print(response)
+            print("Done", len(response.ids), "Documents")

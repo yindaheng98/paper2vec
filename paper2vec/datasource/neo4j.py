@@ -6,14 +6,23 @@ from argparse import ArgumentParser
 async def get_papers(tx, query):
     papers = []
     for record in await (await tx.run(query)).values():
-        if "title" not in record[0]:
+        paper = record[0]
+        if "title" not in paper:
             papers.append(None)
             continue
-        paper = "Title: " + record[0]["title"]
-        metadata = {"title": record[0]["title"], "title_hash": record[0]["title_hash"]}
-        if "abstract" in record[0]:
-            paper += " Abstract: " + record[0]["abstract"]
-        content = Content(id=record[0]["title_hash"], text=paper, metadata=metadata)
+        metadata = {"source": "file", "source_id": paper["title_hash"]}
+        if "doi" in paper:
+            metadata["url"] = f"https://doi.org/" + paper["doi"]
+        elif "paperId" in paper:
+            metadata["url"] = f"https://www.semanticscholar.org/paper/" + paper["paperId"]
+        if "date" in paper:
+            metadata["created_at"] = paper["date"]
+        elif "year" in paper:
+            metadata["created_at"] = paper["year"]
+        text = "Title: " + paper["title"]
+        if "abstract" in paper:
+            text += "\n Abstract: " + paper["abstract"]
+        content = Content(id=paper["title_hash"] + "-title-abstract", text=text, metadata=metadata)
         papers.append(content)
     return papers
 
